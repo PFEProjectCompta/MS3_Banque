@@ -1,18 +1,16 @@
-package com.ges.banqueservice.entities;
+package com.ges.banqueservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import com.ges.banqueservice.entities.Banque;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
-@Table(name = "contact")
-public class Contact {
-    @Id
-    private String id;
+@Data@NoArgsConstructor@AllArgsConstructor@Builder
+public class ContactDTO {
     private String type_contact;
     private String civilite;
     private String nom;
@@ -23,8 +21,5 @@ public class Contact {
     private String portable;
     private String email;
     private String telecopie;
-    @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JoinColumn(name = "banque")
-    private Banque banque;
+    private String banqueId;
 }

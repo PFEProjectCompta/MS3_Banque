@@ -1,12 +1,13 @@
 package com.ges.banqueservice.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
@@ -26,4 +27,12 @@ public class Banque {
     private String telecopie;
     private String email;
     private String site_internet;
+    @OneToMany(mappedBy = "banque",cascade = CascadeType.REMOVE)
+    private List<Contact> contacts;
+    @OneToMany(mappedBy = "banque", cascade = CascadeType.REMOVE)
+    private List<CompteBancaire> compteBancaires;
+    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "agence")
+    private Agence agence;
 }

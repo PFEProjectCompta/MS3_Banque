@@ -1,0 +1,128 @@
+type Query{
+# Query de "Agence"
+    agenceList:[Agence]
+    agenceById(id:String):Agence
+# Query de "Agence"
+    banqueList:[Banque]
+    banqueById(id:String):Banque
+# Query de "CompteBancaire"
+    compteBancaireList:[CompteBancaire]
+    compteBancaireById(id:String):CompteBancaire
+# Query de "Contact"
+    contactList:[Contact]
+    contactById(id:String):Contact
+}
+type Mutation{
+# Mutation de "Agence"
+    ajouterAgence(agenceDTO:AgenceDTO):Agence
+    modifierAgence(agenceDTO:AgenceDTO,id:String):Agence
+    supprimerAgence(id:String):Agence
+# Mutation de "Banque"
+    ajouterBanque(banqueDTO:BanqueDTO):Banque
+    modifierBanque(banqueDTO:BanqueDTO,id:String):Banque
+    supprimerBanque(id:String):Banque
+# Mutation de "Banque"
+    ajouterCompteBancaire(compteBancaireDTO:CompteBancaireDTO):CompteBancaire
+    modifierCompteBancaire(compteBancaireDTO:CompteBancaireDTO,id:String):CompteBancaire
+    supprimerCompteBancaire(id:String):CompteBancaire
+# Mutation de "Contact"
+    ajouterContact(contactDTO:ContactDTO):Contact
+    modifierContact(contactDTO:ContactDTO,id:String):Contact
+    supprimerContact(id:String):Contact
+}
+type Agence{
+    id :String,
+    nom :String ,
+    complement :String ,
+    code_postale: String ,
+    ville: String ,
+    pays: String ,
+    banques : [Banque]
+}
+
+type Banque{
+    id: String ,
+    abrege: String,
+    intitule :String ,
+    interlocuteur: String ,
+    codeBIC: String ,
+    adresse: String ,
+    code_postale: String ,
+    ville: String ,
+    pays: String ,
+    telephone: String ,
+    telecopie: String ,
+    email: String ,
+    site_internet: String ,
+    contacts :[Contact],
+    compteBancaires :[CompteBancaire],
+    agence: Agence
+}
+type CompteBancaire{
+    id: String ,
+    abrege :String ,
+    devise :String ,
+    pays :String ,
+    structure :String ,
+    num_compte :String ,
+    num_guichet :String ,
+    banque: Banque
+}
+type Contact{
+    id :String ,
+    type_contact: String ,
+    civilite :String ,
+    nom :String ,
+    prenom: String ,
+    service: String ,
+    fonction: String ,
+    telephone: String ,
+    portable :String ,
+    email :String ,
+    telecopie :String ,
+    banque: Banque
+}
+input AgenceDTO{
+    nom :String ,
+    complement :String ,
+    code_postale: String ,
+    ville: String ,
+    pays: String ,
+}
+input BanqueDTO{
+    abrege: String,
+    intitule :String ,
+    interlocuteur: String ,
+    codeBIC: String ,
+    adresse: String ,
+    code_postale: String ,
+    ville: String ,
+    pays: String ,
+    telephone: String ,
+    telecopie: String ,
+    email: String ,
+    site_internet: String ,
+    agenceId: String
+}
+input CompteBancaireDTO{
+    abrege :String ,
+    devise :String ,
+    pays :String ,
+    structure :String ,
+    num_compte :String ,
+    num_guichet :String ,
+    banqueId: String
+}
+input ContactDTO{
+    type_contact: String ,
+    civilite :String ,
+    nom :String ,
+    prenom: String ,
+    service: String ,
+    fonction: String ,
+    telephone: String ,
+    portable :String ,
+    email :String ,
+    telecopie :String ,
+    banqueId: String
+}
