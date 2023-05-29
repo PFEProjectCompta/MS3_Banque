@@ -4,13 +4,18 @@ import com.ges.banqueservice.entities.Agence;
 import com.ges.banqueservice.entities.Banque;
 import com.ges.banqueservice.entities.CompteBancaire;
 import com.ges.banqueservice.entities.Contact;
+import com.ges.banqueservice.model.PlanComptableElement;
+import com.ges.banqueservice.model.Societe;
 import com.ges.banqueservice.repository.AgenceRepository;
 import com.ges.banqueservice.repository.BanqueRepository;
 import com.ges.banqueservice.repository.CompteBancaireRepository;
 import com.ges.banqueservice.repository.ContactRepository;
+import com.ges.banqueservice.service.PlanComptableRestClientService;
+import com.ges.banqueservice.service.SocieteRestClientService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -19,12 +24,20 @@ public class InitialData {
     private static BanqueRepository banqueRepository;
     private static CompteBancaireRepository compteBancaireRepository;
     private static ContactRepository contactRepository;
+    private static PlanComptableRestClientService planComptableRestClientService;
+    private static SocieteRestClientService societeRestClientService;
 
-    public InitialData(AgenceRepository agenceRepository, BanqueRepository banqueRepository, CompteBancaireRepository compteBancaireRepository, ContactRepository contactRepository) {
+    public InitialData(AgenceRepository agenceRepository,
+                       BanqueRepository banqueRepository,
+                       CompteBancaireRepository compteBancaireRepository,
+                       ContactRepository contactRepository,
+                       PlanComptableRestClientService planComptableRestClientService, SocieteRestClientService societeRestClientService) {
         this.agenceRepository = agenceRepository;
         this.banqueRepository = banqueRepository;
         this.compteBancaireRepository = compteBancaireRepository;
         this.contactRepository = contactRepository;
+        this.planComptableRestClientService = planComptableRestClientService;
+        this.societeRestClientService = societeRestClientService;
     }
     public static void ajouterAgence(){
         for(int i=0;i<10;i++){
@@ -64,7 +77,10 @@ public class InitialData {
         });
     }
     public static void ajouterCompteBancaire(){
+        Random random=new Random();
         List<Banque> banques=banqueRepository.findAll();
+        List<PlanComptableElement> planComptableElements=planComptableRestClientService.allplanComptableElements().getContent().stream().toList();
+        List<Societe> societes=societeRestClientService.allSocietes().getContent().stream().toList();
         banques.forEach(banque -> {
             for (int i=0;i<5;i++){
                 CompteBancaire compteBancaire=CompteBancaire.builder()
@@ -76,6 +92,8 @@ public class InitialData {
                         .num_compte("compte"+i)
                         .num_guichet("num"+i)
                         .banque(banque)
+                        .planComptableElementId(planComptableElements.get(random.nextInt(19)).getId())
+                        .societeId(societes.get(random.nextInt(19)).getId())
                         .build();
                 System.out.println(compteBancaireRepository.save(compteBancaire).getId());
             }
