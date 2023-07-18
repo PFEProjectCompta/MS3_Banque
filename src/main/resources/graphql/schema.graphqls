@@ -2,15 +2,19 @@ type Query{
 # Query de "Agence"
     agenceList:[Agence]
     agenceById(id:String):Agence
+    agenceByIdSociete(id:String):[Agence]
 # Query de "Banque"
     banqueList:[Banque]
     banqueById(id:String):Banque
+    banqueByIdAgence(id:String):[Banque]
 # Query de "CompteBancaire"
     compteBancaireList:[CompteBancaire]
     compteBancaireById(id:String):CompteBancaire
+    compteBancaireListByBanqueId(id:String):[CompteBancaire]
 # Query de "Contact"
     contactList:[Contact]
     contactById(id:String):Contact
+    contactByIdBanque(id:String):[Contact]
 }
 type Mutation{
 # Mutation de "Agence"
@@ -21,10 +25,11 @@ type Mutation{
     ajouterBanque(banqueDTO:BanqueDTO):Banque
     modifierBanque(banqueDTO:BanqueDTO,id:String):Banque
     supprimerBanque(id:String):Banque
-# Mutation de "Banque"
+# Mutation de "CompteBancaire"
     ajouterCompteBancaire(compteBancaireDTO:CompteBancaireDTO):CompteBancaire
     modifierCompteBancaire(compteBancaireDTO:CompteBancaireDTO,id:String):CompteBancaire
     supprimerCompteBancaire(id:String):CompteBancaire
+    ajouterCompteBancaireBanqueAgence(agenceDTO:AgenceDTO,banqueDTO:BanqueDTO,compteBancaireDTO:CompteBancaireDTO):CompteBancaire
 # Mutation de "Contact"
     ajouterContact(contactDTO:ContactDTO):Contact
     modifierContact(contactDTO:ContactDTO,id:String):Contact
@@ -37,7 +42,8 @@ type Agence{
     code_postale: String ,
     ville: String ,
     pays: String ,
-    banques : [Banque]
+    banques : [Banque],
+    societeId :String
 }
 
 type Banque{
@@ -68,8 +74,6 @@ type CompteBancaire{
     num_guichet :String ,
     planComptableElementId:String,
     planComptableElement:PlanComptableElement,
-    societeId :String ,
-    societe :Societe,
     banque: Banque
 }
 type PlanComptableElement{
@@ -145,6 +149,7 @@ input AgenceDTO{
     code_postale: String ,
     ville: String ,
     pays: String ,
+    societeId :String
 }
 input BanqueDTO{
     abrege: String,
@@ -170,7 +175,6 @@ input CompteBancaireDTO{
     num_guichet :String ,
     banqueId: String,
     planComptableElementId:String,
-    societeId:String
 }
 
 input ContactDTO{

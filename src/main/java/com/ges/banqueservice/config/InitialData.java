@@ -13,6 +13,8 @@ import com.ges.banqueservice.repository.ContactRepository;
 import com.ges.banqueservice.service.PlanComptableRestClientService;
 import com.ges.banqueservice.service.SocieteRestClientService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.Random;
@@ -79,8 +81,8 @@ public class InitialData {
     public static void ajouterCompteBancaire(){
         Random random=new Random();
         List<Banque> banques=banqueRepository.findAll();
-        List<PlanComptableElement> planComptableElements=planComptableRestClientService.allplanComptableElements().getContent().stream().toList();
-        List<Societe> societes=societeRestClientService.allSocietes().getContent().stream().toList();
+        List<PlanComptableElement> planComptableElements=planComptableRestClientService.allplanComptableElements(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization")).getContent().stream().toList();
+        List<Societe> societes=societeRestClientService.allSocietes(((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization")).getContent().stream().toList();
         banques.forEach(banque -> {
             for (int i=0;i<5;i++){
                 CompteBancaire compteBancaire=CompteBancaire.builder()
@@ -93,7 +95,7 @@ public class InitialData {
                         .num_guichet("num"+i)
                         .banque(banque)
                         .planComptableElementId(planComptableElements.get(random.nextInt(19)).getId())
-                        .societeId(societes.get(random.nextInt(19)).getId())
+//                        .societeId(societes.get(random.nextInt(19)).getId())
                         .build();
                 System.out.println(compteBancaireRepository.save(compteBancaire).getId());
             }

@@ -21,6 +21,8 @@ public class Agence {
     private String code_postale;
     private String ville;
     private String pays;
+    private String societeId;
     @OneToMany(mappedBy = "agence",cascade = CascadeType.REMOVE)
     private List<Banque> banques;
+
 }

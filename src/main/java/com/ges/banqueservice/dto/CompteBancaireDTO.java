@@ -19,5 +19,4 @@ public class CompteBancaireDTO {
     private String num_guichet;
     private String banqueId;
     private String planComptableElementId;
-    private String societeId;
 }

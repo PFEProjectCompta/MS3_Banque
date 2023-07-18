@@ -9,6 +9,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,17 @@ public class BanqueGraphQLController {
     @QueryMapping
     public Banque banqueById(@Argument String id){
         return banqueRepository.findById(id).get();
+    }
+    @QueryMapping
+    public List<Banque> banqueByIdAgence(@Argument String id){
+        List<Banque> banques=banqueRepository.findAll();
+        List<Banque> banqueListByAgenceId=new ArrayList<>();
+        for(int i=0;i<banques.size();i++){
+            if(banques.get(i).getAgence().getId().equals(id)){
+                banqueListByAgenceId.add(banques.get(i));
+            }
+        }
+        return banqueListByAgenceId;
     }
     @MutationMapping
     public Banque ajouterBanque(@Argument BanqueDTO banqueDTO){

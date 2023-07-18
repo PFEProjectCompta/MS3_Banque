@@ -17,4 +17,5 @@ public class AgenceDTO {
     private String code_postale;
     private String ville;
     private String pays;
+    private String societeId;
 }

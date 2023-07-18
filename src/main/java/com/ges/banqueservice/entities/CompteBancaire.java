@@ -24,9 +24,6 @@ public class CompteBancaire {
     private String planComptableElementId;
     @Transient
     private PlanComptableElement planComptableElement;
-    private String societeId;
-    @Transient
-    private Societe societe;
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name="banque")

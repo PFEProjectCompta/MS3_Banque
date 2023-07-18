@@ -9,6 +9,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,17 @@ public class AgenceGraphQLController {
     public Agence agenceById(@Argument String id){
         return agenceRepository.findById(id).get();
     }
+    @QueryMapping
+    public List<Agence> agenceByIdSociete(@Argument String id){
+        List<Agence> agences=agenceRepository.findAll();
+        List<Agence> agenceListBySocieteId=new ArrayList<>();
+        for(int i=0;i<agences.size();i++){
+            if(agences.get(i).getSocieteId().equals(id)){
+                agenceListBySocieteId.add(agences.get(i));
+            }
+        }
+        return agenceListBySocieteId;
+    }
     @MutationMapping
     public Agence ajouterAgence(@Argument AgenceDTO agenceDTO){
         Agence agence=Agence.builder()
@@ -36,6 +48,7 @@ public class AgenceGraphQLController {
                 .code_postale(agenceDTO.getCode_postale())
                 .ville(agenceDTO.getVille())
                 .pays(agenceDTO.getPays())
+                .societeId(agenceDTO.getSocieteId())
                 .build();
         return agenceRepository.save(agence);
     }
@@ -47,6 +60,7 @@ public class AgenceGraphQLController {
         agence.setCode_postale(agenceDTO.getCode_postale()==null?agence.getCode_postale():agenceDTO.getCode_postale());
         agence.setVille(agenceDTO.getVille()==null?agence.getVille():agenceDTO.getVille());
         agence.setPays(agenceDTO.getPays()==null?agence.getPays():agenceDTO.getPays());
+        agence.setSocieteId(agenceDTO.getPays()==null?agence.getSocieteId():agenceDTO.getSocieteId());
         return agenceRepository.save(agence);
     }
     @MutationMapping
